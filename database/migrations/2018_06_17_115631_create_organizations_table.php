@@ -14,10 +14,11 @@ class CreateOrganizationsTable extends Migration
     public function up()
     {
         Schema::create('organizations', function (Blueprint $table) {
-            $table->autoIncrement('id')->unsigned();
+            $table->increments('id');
             $table->string('name');
             $table->boolean('confirm');
         });
+
     }
 
     /**
@@ -27,6 +28,6 @@ class CreateOrganizationsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('organizations');
+        //
     }
 }
