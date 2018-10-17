@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -39,11 +40,15 @@
                         {{ config('app.name', 'Laravel') }}
                     </a>
                 </div>
+                    <ul class="nav navbar-nav">
+                        <a class="navbar-brand" href="{{ url('/projects') }}">
+                            Projects
+                        </a>
+                    </ul>
 
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
-                        &nbsp;
                     </ul>
 
                     <!-- Right Side Of Navbar -->
