@@ -25,12 +25,24 @@
 
             <div class="col-md-9 p">
                    <div style="font-size:20pt;">{{$project->name}} board</div>
-                   <div><a href=""><img style="width:40px;" src="{{ URL::to('/images/add_user.png') }}"  /></a></div>
+               <!--    <div><a href=""><img style="width:40px;" src="{{ URL::to('/images/add_user.png') }}"  /></a></div>-->
 
                 @foreach($issueStatuses as $issueStatus)
-                    <div class="panel-body panel panel-default" style="width:250px;display:inline-block;margin-left:20px;">{{$issueStatus->name}}
+                    <div class="panel-body panel panel-default" style="width:250px;display:inline-block;margin-left:20px;">
+                        <p style="padding:3px;">{{$issueStatus->name}}</p>
+                        @foreach($issues as $issue)
+                            @if($issue->status_id==$issueStatus->id)
 
-                        <div><a href=""><button>+</button></a></div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        {{$project->key.$issue->id}}
+                                    </div>
+                                    <div class="panel-body">
+                                    {{$issue->name}}</div>
+                                </div>
+                            @endif
+                            @endforeach
+                        <div style="alignment: center;"><a href="{{ url("/issues/create") }}"><button>+</button></a></div>
                     </div>
 
                 @endforeach
