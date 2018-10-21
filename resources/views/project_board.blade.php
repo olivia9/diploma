@@ -26,26 +26,28 @@
             <div class="col-md-9 p">
                    <div style="font-size:20pt;">{{$project->name}} board</div>
                <!--    <div><a href=""><img style="width:40px;" src="{{ URL::to('/images/add_user.png') }}"  /></a></div>-->
+                <?php
 
-                @foreach($issueStatuses as $issueStatus)
-                    <div class="panel-body panel panel-default" style="width:250px;display:inline-block;margin-left:20px;">
-                        <p style="padding:3px;">{{$issueStatus->name}}</p>
-                        @foreach($issues as $issue)
-                            @if($issue->status_id==$issueStatus->id)
+                foreach($issueStatuses as $issueStatus)
+                    {
+                        echo '<div class="panel-body panel panel-default" style="width:250px;display:inline-block;margin-left:20px;">
+                        <p style="padding:3px;">'.$issueStatus->name.'</p>';
+                        foreach($issues as $issue)
+                            if($issue->status_id==$issueStatus->id)
+                                {
+                                    echo '<div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            $project->key.$issue->id}}
+                                        </div>
+                                        <div class="panel-body">'.$issue->name.'</div>
+                                        </div>';
+                                }
+                        echo '<div style="alignment: center;" class="create_issue">+<a href= "'.url("/issues/create").'"><button>+</button></a></div>
+                        </div>';
 
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        {{$project->key.$issue->id}}
-                                    </div>
-                                    <div class="panel-body">
-                                    {{$issue->name}}</div>
-                                </div>
-                            @endif
-                            @endforeach
-                        <div style="alignment: center;"><a href="{{ url("/issues/create") }}"><button>+</button></a></div>
-                    </div>
+               }
+                ?>
 
-                @endforeach
              </div>
     </div>
 @endsection
