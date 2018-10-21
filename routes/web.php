@@ -38,7 +38,15 @@ Route::get('/home', 'HomeController@index');
 Route::get('/login', 'Auth\LoginController@index');
 Route::post('/login', 'Auth\LoginController@login');*/
 Auth::routes();
-Route::get('/home', 'HomeController@index');
-Route::get('/projects', 'ProjectsController@index');
-Route::get('/projects/new/form', 'ProjectsController@newProjectForm');
-Route::post('/projects/new', 'ProjectsController@newProject');
+Route::group(['middleware' =>'auth'], function(){
+    Route::get('/home', 'HomeController@index');
+    Route::get('/projects', 'ProjectsController@index');
+    Route::get('/projects/new/form', 'ProjectsController@newProjectForm');
+    Route::post('/projects/new', 'ProjectsController@newProject');
+    Route::get('/project/{id}/settings', 'ProjectsController@settings');
+    Route::get('/project/{id}/board', 'ProjectsController@board');
+
+    Route::get('/users', 'UsersController@index');
+    Route::get('/users/new/form', 'UsersController@newUserForm');
+    Route::post('/users/new', 'UsersController@newUser');
+});

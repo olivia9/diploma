@@ -1,8 +1,34 @@
 @extends('layouts.app')
 
 @section('content')
-            <div class="col-md-offset-2">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
                 <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div >
+                            <img style="width:40px;" src="{{ URL::to('/images/'.$project->avatar) }}"  />
+                            <span style="font-size:25;">{{$project->name}}</span>
+                        </div>
+                    </div>
+
+                    <div class="panel-body">
+
+                        <div style="padding:10px;"><a href="{{ url("/project/{$project->id}/plans") }}">Work plans</a></div>
+                        <div style="padding:10px;"><a href="{{ url("/project/{$project->id}/board") }}">Board</a></div>
+                        <div style="padding:10px;background:#F0FFF0;"><a href="{{ url("/project/{$project->id}/settings") }}">Settings</a></div>
+                        <div style="padding:10px;"><a href="{{ url("/project/{$project->id}/analytics") }}">Analytics</a></div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-9">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div style="font-size:15pt;">Settings</div>
+                    </div>
+
                     <div class="panel-body">
                         <form class="form-horizontal" role="form" method="POST" action="{{ url('/projects/new') }}">
                             {{ csrf_field() }}
@@ -37,7 +63,8 @@
                             <div class="form-group{{ $errors->has('avatar') ? ' has-error' : '' }}">
                                 <label for="avatar" class="col-md-4 control-label">Avatar</label>
                                 <div class="col-md-6">
-                                <input name="avatar" id="avatar" type="file" class="form-control" />
+                                    <img style="width:200px;" src="{{ URL::to('/images/'.$project->avatar) }}"  />
+                                    <input name="avatar" id="avatar" type="file" class="form-control" />
                                 </div>
                             </div>
 
@@ -66,4 +93,6 @@
                     </div>
                 </div>
             </div>
+        </div>
+
 @endsection

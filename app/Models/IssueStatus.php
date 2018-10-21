@@ -4,10 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Project extends Model
+class IssueStatus extends Model
 {
 
-    public $table = 'projects';
+    public $table = 'issue_statuses';
     public $primarykey = 'id';
 
     /**
@@ -15,8 +15,8 @@ class Project extends Model
      *
      * @var array
      */
-    public function pm()
+ /*   public function pm()
     {
         return $this->belongsTo(User::class);
-    }
+    }*/
 }
