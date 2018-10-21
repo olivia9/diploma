@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -39,11 +40,20 @@
                         {{ config('app.name', 'Laravel') }}
                     </a>
                 </div>
+                    <ul class="nav navbar-nav">
+                        <a class="navbar-brand" href="{{ url('/projects') }}">
+                            Projects
+                        </a>
+                    </ul>
+                <ul class="nav navbar-nav">
+                    <a class="navbar-brand" href="{{ url('/users') }}">
+                        Users
+                    </a>
+                </ul>
 
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
-                        &nbsp;
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -78,7 +88,38 @@
             </div>
         </nav>
 
-        @yield('content')
+        <div class="container" style="display:inline-block;height:100%;">
+            <div class="row">
+                <!--<div class="col-md-3">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <div >List Projects</div>
+                            <button>
+                                <a href="{{ url('/projects/new/form') }}">
+                                    New Project
+                                </a>
+                            </button>
+                        </div>
+
+                        <div class="panel-body">
+                            <table>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>PM</td>
+                                </tr>
+
+
+                            </table>
+                        </div>
+                    </div>
+                </div>-->
+
+                @yield('content')
+
+            </div>
+        </div>
+
+
     </div>
 
     <!-- Scripts -->

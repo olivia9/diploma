@@ -13,6 +13,8 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:api');
+Route::resource('v1/users','Api_v1\UserController');
+/*Route::bind('user', function($id)
+{
+    return \App\Models\User::where('id', $id)->first();
+});*/
