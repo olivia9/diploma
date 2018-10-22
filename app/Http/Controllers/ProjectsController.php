@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Project as ProjectRequest;
 use App\Models\IssueStatus;
+use App\Models\IssueType;
 use App\Models\Project;
 use App\Models\User;
 use App\Models\Issue;
@@ -37,10 +38,14 @@ class ProjectsController extends Controller
         $project = Project::find($id);
         $issueStatuses = IssueStatus::all();
         $issues = Issue::all();
-       // foreach($issues as $issue)
-//        /    dd($issue->name);
-      //  dd($issues);
-        return view('project_board',['project'=>$project, 'issueStatuses' => $issueStatuses,'issues'=>$issues]);
+        $issueTypes = IssueType::all();
+
+        return view('project_board',[
+            'project'=>$project,
+            'issueStatuses' => $issueStatuses,
+            'issues'=>$issues,
+            'issueTypes' => $issueTypes
+        ]);
     }
 
     public function newProjectForm()
