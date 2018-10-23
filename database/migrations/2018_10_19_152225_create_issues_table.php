@@ -42,6 +42,6 @@ class CreateIssuesTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::drop('issues');
     }
 }

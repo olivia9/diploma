@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Project as ProjectRequest;
+use App\Http\Requests\User as UserRequest;
 use App\Models\Project;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -23,7 +23,7 @@ class UsersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(UserRequest $request)
     {
         $users = User::all();
         return view('users',['users'=>$users]);

@@ -10,20 +10,34 @@ class Role extends Model
     public $table = 'roles';
     public $primarykey = 'id';
 
+    public function scopeAdmin()
+    {
+        return Role::where('slug', 'admin')->first()->id;
+    }
+    public static function scopePm()
+    {
+        return Role::where('slug', 'pm')->first()->id;
+    }
+    public static function scopeStaff()
+    {
+        return Role::where('slug', 'staff')->first()->id;
+    }
+   /* public static function adminId()
+    {
+        return Role::where('slug', 'admin')->first()->id;
+    }
+    public static function pmId()
+    {
+        return Role::where('slug', 'pm')->first()->id;
+    }
+    public static function idStaff()
+    {
+        return Role::where('slug', 'staff')->first()->id;
+    }*/
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = [
-        'login', 'email', 'password',
-    ];
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password', 'remember_token',
-    ];
 }

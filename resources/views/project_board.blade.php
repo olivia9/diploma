@@ -65,6 +65,11 @@
                         <label for="name" class="col-md-4 control-label">Name</label>
                         <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" required autofocus>
 
+                        <label for="executor" class="col-md-4 control-label">Executor</label>
+                        <select id="executor" class="form-control">
+
+                        </select>
+
                         <label for="status" class="col-md-4 control-label">Status</label>
                         <input id="status" type="text" class="form-control" disabled name="status" value="{{ old('name') }}" required autofocus>
 
@@ -101,6 +106,7 @@
 
                     </div>
                     <div class="modal-footer">
+                        <button type="button" class="btn btn-submit" data-dismiss="modal">New Issue</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     </div>
                 </div>

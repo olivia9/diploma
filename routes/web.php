@@ -45,7 +45,8 @@ Route::group(['middleware' =>'auth'], function(){
     Route::post('/projects/new', 'ProjectsController@newProject');
     Route::get('/project/{id}/settings', 'ProjectsController@settings');
     Route::get('/project/{id}/board', 'ProjectsController@board');
-    Route::get('/issues/create', 'IssuesController@index');
+
+    Route::resource('/issues', 'IssuesController');
 
     Route::get('/users', 'UsersController@index');
     Route::get('/users/new/form', 'UsersController@newUserForm');
