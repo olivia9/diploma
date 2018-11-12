@@ -45,10 +45,17 @@ Route::group(['middleware' =>'auth'], function(){
     Route::post('/projects/new', 'ProjectsController@newProject');
     Route::get('/project/{id}/settings', 'ProjectsController@settings');
     Route::get('/project/{id}/board', 'ProjectsController@board');
+    Route::get('/project/{id}/analytics', 'AnalyticsController@index');
 
-    Route::resource('/issues', 'IssuesController');
+   // Route::resource('/issues', 'IssuesController');
+    Route::post('/issues/new', 'IssuesController@store');
+    Route::get('/issues/{id}', 'IssuesController@show');
+    Route::get('/issue/statuses', function(){
+        return response(\App\Models\IssueStatus::all(), 200);
+    });
 
     Route::get('/users', 'UsersController@index');
     Route::get('/users/new/form', 'UsersController@newUserForm');
     Route::post('/users/new', 'UsersController@newUser');
+    Route::get('/users/{email}/finish_registration', 'UsersController@showFinishRegistrationForm');
 });

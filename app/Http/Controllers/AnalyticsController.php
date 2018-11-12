@@ -10,12 +10,10 @@ use App\Models\User;
 use App\Models\Issue;
 use App\Models\Permission;
 use App\Models\RolePermission;
-use App\Models\UserRole;
-use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class ProjectsController extends Controller
+class AnalyticsController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -27,20 +25,12 @@ class ProjectsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id)
     {
-        $loginUser = Auth::user();
+        $project = Project::find($id);
+        $projects = Project::with('pm')->get();
 
-        if($loginUser->admin)
-            $projects = Project::with('pm')->get();
-
-        if($loginUser->pm)
-            $projects = Project::with('pm')->where('pm_id', $loginUser)->get();
-
-        if($loginUser->staff)
-            $projects = Project::with('pm')->where('pm_id', $loginUser)->get();
-
-        return view('projects',['projects'=>$projects]);
+        return view('analytics',['project'=>$project]);
     }
 
     public function board($id)
@@ -49,7 +39,7 @@ class ProjectsController extends Controller
         $issueStatuses = IssueStatus::all();
         $issues = Issue::all();
         $issueTypes = IssueType::all();
-        $executors = User::whereIn('id', UserRole::where('role_id', Role::where('slug', 'staff')->first()->id)->get()->pluck('user_id'))->get();
+        $executors = User::staff()->get();
 
         return view('project_board',[
             'project'=>$project,

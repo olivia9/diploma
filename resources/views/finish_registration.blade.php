@@ -13,7 +13,7 @@
                                 <label for="email" class="col-md-4 control-label">Email</label>
 
                                 <div class="col-md-6">
-                                    <input id="email" type="text" class="form-control" name="email" value="{{ old('name') }}" required autofocus>
+                                    <input id="email" disabled type="text" class="form-control" name="email" value="{{ $userInfo->email }}" required autofocus>
 
                                     @if ($errors->has('email'))
                                         <span class="help-block">
@@ -23,16 +23,11 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="pm" class="col-md-4 control-label">Role</label>
+                                <label for="firstname" class="col-md-4 control-label">First Name</label>
 
                                 <div class="col-md-6">
-                                    <select class="form-control"  id="role" name="role" >
-                                        @foreach($roles as $role)
-                                            <option role_id="{{$role->id}}">{{$role->name}}</option>>
+                                    <input id="firstname" type="text" class="form-control" name="email" value="{{ $userInfo->email }}" required autofocus>
 
-                                        @endforeach
-
-                                    </select>
                                 </div>
                             </div>
                             <div class="form-group">

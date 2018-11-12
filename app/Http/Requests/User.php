@@ -13,8 +13,13 @@ class User extends FormRequest
      */
     public function authorize()
     {
-        dd($this->user());
-       // return true;
+        switch($this->route()->getActionMethod()) {
+
+            case 'index' :
+                return $this->user()->hasPermission('user', 'view');
+        }
+
+        return true;
     }
 
     /**

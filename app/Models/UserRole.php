@@ -15,8 +15,7 @@ class UserRole extends Model
      *
      * @var array
      */
-    protected $fillable = [
-        'login', 'email', 'password',
+    protected $fillable = ['user_id', 'role_id'
     ];
     /**
      * The attributes that should be hidden for arrays.
@@ -30,6 +29,6 @@ class UserRole extends Model
 
     public function role()
     {
-        return $this->hasMany(Role::class);
+        return $this->belongsTo(Role::class);
     }
 }

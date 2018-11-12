@@ -37,23 +37,28 @@
 
                     <!-- Branding Image -->
                     <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', 'Laravel') }}
+                       Task-Pro
                     </a>
                 </div>
                 <?php
-                    if(isset($user['permissions']['project'])&&(isset($user['permissions']['project']['view'])))
+                    if(\App\Models\User::hasPermission('project'))
                 echo '
                     <ul class="nav navbar-nav">
                         <a class="navbar-brand" href="'. url('/projects').'">
                             Projects
                         </a>
                     </ul>';
-                    ?>
-                <ul class="nav navbar-nav">
-                    <a class="navbar-brand" href="{{ url('/users') }}">
+
+                if(\App\Models\User::hasPermission('user'))
+                    echo '
+                    <ul class="nav navbar-nav">
+                    <a class="navbar-brand" href="'. url('/users') .'">
                         Users
                     </a>
-                </ul>
+                </ul>';
+
+                    ?>
+
 
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->

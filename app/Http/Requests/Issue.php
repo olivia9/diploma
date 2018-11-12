@@ -37,6 +37,7 @@ class Issue extends FormRequest
                 ];
 
             case 'index':
+            case 'show':
             case 'destroy':
                 return [
 

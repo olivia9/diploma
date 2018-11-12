@@ -18,4 +18,6 @@ class Permission extends Model
     {
         return Permission::where('permission', $permission);
     }
+
+
 }

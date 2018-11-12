@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\User as UserRequest;
 use App\Models\Project;
+use App\Models\Role;
 use App\Models\User;
+use App\Models\UserRole;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class UsersController extends Controller
 {
@@ -25,23 +28,41 @@ class UsersController extends Controller
      */
     public function index(UserRequest $request)
     {
-        $users = User::all();
-        return view('users',['users'=>$users]);
+        $users = User::whereNotNull('email_verified_at')->get();
+        $roles = Role::all();
+
+        return view('users',['users'=>$users,
+            'roles' => $roles]);
     }
 
     public function newUserForm()
     {
-        return view('new_user');
+        $roles = Role::all();
+
+        return view('new_user', ['roles' => $roles]);
     }
 
     public function newUser(Request $request)
     {
-        dd($request->get('email'));
-      /*  $project = new Project;
-        $project->avatar = 'test';
-        $project->name = $request->get('name');
-        $project->pm_id = 1;
+      /*  $email = $request->get('email');
+        $role = $request->get('role');
 
-        $project->save();*/
+        $user = User::create(['email' => $email, 'password' => '']);
+        UserRole::create([
+            'user_id' => $user->id,
+            'role_id' => (int)$role
+        ]);*/
+        Mail::send('emails.new_user',[], function ($message) {
+            $message->from('us@example.com', 'Laravel');
+
+            $message->to('foo@example.com');
+        });
+    }
+
+    public function showFinishRegistrationForm($email)
+    {
+        $userInfo = User::where('email', $email)->first();
+
+        return view('finish_registration', ['userInfo' => $userInfo]);
     }
 }

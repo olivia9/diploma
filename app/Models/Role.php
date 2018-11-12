@@ -22,18 +22,10 @@ class Role extends Model
     {
         return Role::where('slug', 'staff')->first()->id;
     }
-   /* public static function adminId()
-    {
-        return Role::where('slug', 'admin')->first()->id;
-    }
-    public static function pmId()
-    {
-        return Role::where('slug', 'pm')->first()->id;
-    }
-    public static function idStaff()
-    {
-        return Role::where('slug', 'staff')->first()->id;
-    }*/
+   public function permission()
+   {
+       return $this->hasMany(RolePermission::class,'role_id', 'id');
+   }
 
     /**
      * The attributes that are mass assignable.
