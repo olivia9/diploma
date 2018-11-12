@@ -14,7 +14,7 @@
 
                     <div class="panel-body">
 
-                        <div style="padding:10px;"><a href="{{ url("/project/{$project->id}/sprints") }}">Sprints</a></div>
+                        <!--<div style="padding:10px;"><a href="{{ url("/project/{$project->id}/sprints") }}">Sprints</a></div>-->
                         <div style="padding:10px;background:#F0FFF0;"><a href="{{ url("/project/{$project->id}/board") }}">Board</a></div>
                         <div style="padding:10px;"><a href="{{ url("/project/{$project->id}/settings") }}">Settings</a></div>
                         <div style="padding:10px;"><a href="{{ url("/project/{$project->id}/analytics") }}">Analytics</a></div>
@@ -37,7 +37,7 @@
                                 {
                                     echo '<div class="panel panel-default issue_update" issue_id="'.$issue->id.'" data-toggle="modal" data-target="#issueUpdate">
                                         <div class="panel-heading">'.
-                                            $project->key.$issue->id.'
+                                            $project->key.$issue->id.' <span style="background:#8eb4cb; padding:2px;">'.$issue->executor->name.'</span>
                                         </div>
                                         <div class="panel-body">'.$issue->name.'</div>
                                         </div>';
@@ -99,7 +99,7 @@
                         </select>
 
                         <label for="estimated_time" class="col-md-4 control-label">Estimated time(minute)</label>
-                        <input id="estimated_time" type="text" class="form-control"  name="status" value="{{ old('name') }}"
+                        <input id="estimated_time" type="number" class="form-control"  name="status" value="0">
 
                         <label for="priority" class="col-md-4 control-label">Priority</label>
                         <select id="priority" class="form-control">
@@ -131,6 +131,7 @@
                         <h4 class="modal-title">UPDATE Issue</h4>
                     </div>
                     <div class="modal-body">
+                        <input type="hidden" name="issue" value=""/>
                         <label for="project" class="col-md-4 control-label">Project</label>
                         <input id="project" type="text" class="form-control" project_id="{{$project->id}}" disabled name="project" value="{{ old('name') }}" required autofocus>
 
@@ -148,7 +149,16 @@
                         </select>
 
                         <label for="status" class="col-md-4 control-label">Status</label>
-                        <input id="status"  type="text" class="form-control" disabled name="status" value="{{ old('name') }}" required autofocus>
+                       <!-- <input id="status"  type="text" class="form-control" disabled name="status" value="{{ old('name') }}" required autofocus>
+-->
+                        <select id="status" class="form-control">
+                            <?php
+                            foreach($issueStatuses as $status)
+                            {
+                                echo '<option status_id="'.$status->id.'">'.$status->name.'</option>';
+                            }
+                            ?>
+                        </select>
 
                         <label for="issue_type" class="col-md-4 control-label">Issue Type</label>
                         <select id="issue_type" class="form-control">
@@ -162,28 +172,28 @@
 
                         <label for="complexity" class="col-md-4 control-label">Complexity</label>
                         <select id="complexity" class="form-control">
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
                         </select>
 
                         <label for="estimated_time" class="col-md-4 control-label">Estimated time(minute)</label>
-                        <input id="estimated_time" type="text" class="form-control"  name="status" value="{{ old('name') }}"
+                        <input id="estimated_time" type="number" class="form-control"  name="status" value="{{ old('name') }}">
 
                         <label for="priority" class="col-md-4 control-label">Priority</label>
                         <select id="priority" class="form-control">
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
                         </select>
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-submit new_issue" data-dismiss="modal">New Issue</button>
+                        <button type="button" class="btn btn-submit update_issue" data-dismiss="modal">Update</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     </div>
                 </div>
@@ -212,7 +222,7 @@
             'name' : $('#issueCreate #name').val(),
             'project': $("#issueCreate #project").attr('project_id'),
             'executor' : $('#issueCreate #executor option:selected').attr('executor_id'),
-            'status' :  $('#issueCreate #issueCreate #status').attr('status_id'),
+            'status' :  $('#issueCreate #status').attr('status_id'),
             'type' : $( '#issueCreate #issue_type option:selected').attr('issue_type_id'),
             'complexity' : $('#issueCreate #complexity option:selected').val(),
             'estimated_time' : $('#issueCreate #estimated_time').val(),
@@ -228,7 +238,7 @@
             },
             dataType: 'json',
             success: function (data) {
-                console.info(data);
+                document.location.reload();
             }
         });
 
@@ -247,35 +257,44 @@
             success: function (issueData) {
                 $('#issueUpdate #name').val(issueData['name']);
                 $('#issueUpdate #project').val($('.project_name').html());
-                $('#issueUpdate #status').attr('status_id');
+                $('#issueUpdate #status').attr('status_id', issueData['status_id']);
+                $('#issueUpdate #estimated_time').val(issueData['estimated_time']);
+                $('#issueUpdate #priority').val(issueData['priority']);
+                $('#issueUpdate #complexity').val(issueData['complexity']);
+                $('#issueUpdate input[name="issue"]').val(issueData['id']);
             }
         });
+    });
 
-       /* var issue = {
-            'name' : $('#name').val(),
-            'project': $("#project").attr('project_id'),
-            'executor' : $('#executor option:selected').attr('executor_id'),
-            'status' :  $('#issueCreate #status').attr('status_id'),
-            'type' : $( '#issue_type option:selected').attr('issue_type_id'),
-            'complexity' : $('#complexity option:selected').val(),
-            'estimated_time' : $('#estimated_time').val(),
-            'priority' : $('#priority option:selected').val()
+    //Creating new issue
+    $(document).on("click", ".update_issue", function () {
+
+        var issue = {
+            'name' : $('#issueUpdate #name').val(),
+            'project': $("#issueUpdate #project").attr('project_id'),
+            'executor' : $('#issueUpdate #executor option:selected').attr('executor_id'),
+            'status' :  $('#issueUpdate #status').attr('status_id'),
+            'type' : $( '#issueUpdate #issue_type option:selected').attr('issue_type_id'),
+            'complexity' : $('#issueUpdate #complexity option:selected').val(),
+            'estimated_time' : $('#issueUpdate #estimated_time').val(),
+            'priority' : $('#issueUpdate #priority option:selected').val()
         };
 
         $.ajax({
             type: "POST",
-            url: '/issues/new',
+            url: '/issues/' + $('#issueUpdate input[name="issue"]').val(),
             data: issue,
             headers: {
                 'X-CSRF-Token': $('input[name=_token]').val(),   //If your header name has spaces or any other char not appropriate
             },
             dataType: 'json',
             success: function (data) {
-                console.info(data);
+                document.location.reload();
             }
-        });*/
+        });
 
     });
+
 
 
 </script>

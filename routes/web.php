@@ -50,12 +50,15 @@ Route::group(['middleware' =>'auth'], function(){
    // Route::resource('/issues', 'IssuesController');
     Route::post('/issues/new', 'IssuesController@store');
     Route::get('/issues/{id}', 'IssuesController@show');
+    Route::post('/issues/{id}', 'IssuesController@update');
     Route::get('/issue/statuses', function(){
         return response(\App\Models\IssueStatus::all(), 200);
     });
 
+    Route::get('/', 'ProjectsController@index');
     Route::get('/users', 'UsersController@index');
     Route::get('/users/new/form', 'UsersController@newUserForm');
     Route::post('/users/new', 'UsersController@newUser');
     Route::get('/users/{email}/finish_registration', 'UsersController@showFinishRegistrationForm');
+    Route::post('/users/{email}/finish_registration', 'UsersController@finishRegistration');
 });

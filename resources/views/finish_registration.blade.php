@@ -24,15 +24,32 @@
                             </div>
                             <div class="form-group">
                                 <label for="firstname" class="col-md-4 control-label">First Name</label>
-
                                 <div class="col-md-6">
-                                    <input id="firstname" type="text" class="form-control" name="email" value="{{ $userInfo->email }}" required autofocus>
-
+                                    <input id="firstname" type="text" class="form-control" name="firstname"  required autofocus>
                                 </div>
                             </div>
                             <div class="form-group">
+                                <label for="lastname" class="col-md-4 control-label">Last Name</label>
+                                <div class="col-md-6">
+                                    <input id="lastname" type="text" class="form-control" name="lastname"  required autofocus>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="password" class="col-md-4 control-label">Password</label>
+                                <div class="col-md-6">
+                                    <input id="password" type="password" class="form-control" name="password"  required autofocus>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="reset_password" class="col-md-4 control-label">Reset Password</label>
+                                <div class="col-md-6">
+                                    <input id="reset_password" type="password" class="form-control" name="reset_password"  required autofocus>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
                                 <div class="col-md-6 col-md-offset-4">
-                                    <button  class="btn btn-primary" id="new_user">
+                                    <button  class="btn btn-primary" id="finish_registration">
                                         New User
                                     </button>
                                 </div>
@@ -48,24 +65,23 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <script>
-    $(document).on("click", "#new_user", function () {
-       // alert($('#role option:selected').attr('role_id'));
+    $(document).on("click", "#finish_registration", function () {
+        var email = $('#email').val();
         var issueId = $(this).attr('issue_id');
         $.ajax({
             type: "POST",
-            url: '/users/new',
+            url: '/users/'+email+'/finish_registration',
             headers: {
                 'X-CSRF-Token': $('input[name=_token]').val(),   //If your header name has spaces or any other char not appropriate
             },
             data:{
-                'email':$('#email').val(),
-                'role':$('#role option:selected').attr('role_id')
+                'firstname' : $('#firstname').val(),
+                'lastname' : $('#lastname').val(),
+                'password' : $('#password').val()
             },
             dataType: 'json',
-            success: function (issueData) {
-                $('#issueUpdate #name').val(issueData['name']);
-                $('#issueUpdate #project').val($('.project_name').html());
-                $('#issueUpdate #status').attr('status_id');
+            success: function () {
+
             }
         });
     });

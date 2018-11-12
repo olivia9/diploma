@@ -13,8 +13,7 @@
                     </div>
 
                     <div class="panel-body">
-
-                        <div style="padding:10px;"><a href="{{ url("/project/{$project->id}/sprints") }}">Sprints</a></div>
+                       <!-- <div style="padding:10px;"><a href="{{ url("/project/{$project->id}/sprints") }}">Sprints</a></div>-->
                         <div style="padding:10px;"><a href="{{ url("/project/{$project->id}/board") }}">Board</a></div>
                         <div style="padding:10px;"><a href="{{ url("/project/{$project->id}/settings") }}">Settings</a></div>
                         <div style="background:#F0FFF0;padding:10px;"><a href="{{ url("/project/{$project->id}/analytics") }}">Analytics</a></div>

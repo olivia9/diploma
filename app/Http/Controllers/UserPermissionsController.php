@@ -61,5 +61,5 @@ class UserPermissionsController extends Controller
         ]);
     }
 
-    public function
+    //public function
 }

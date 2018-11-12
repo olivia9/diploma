@@ -25,6 +25,7 @@ class Issue extends FormRequest
     {
         switch($this->route()->getActionMethod()) {
             case 'store':
+            case 'update':
                 return [
                  'name' => 'required',
                  'project' => 'required|exists:projects,id',
@@ -35,7 +36,6 @@ class Issue extends FormRequest
                  'priority' => 'required',
                  'complexity' => 'required'
                 ];
-
             case 'index':
             case 'show':
             case 'destroy':

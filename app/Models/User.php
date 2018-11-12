@@ -30,6 +30,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+    protected $encryptable = ['password'];
     public function getNameAttribute()
     {
         return "{$this->firstname} {$this->lastname}";
@@ -55,6 +56,11 @@ class User extends Authenticatable
     public function project()
     {
         return $this->hasMany(Project::class);
+    }
+
+    public function issue()
+    {
+        return $this->hasMany(Issue::class);
     }
 
 
