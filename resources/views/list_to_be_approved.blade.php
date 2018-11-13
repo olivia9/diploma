@@ -46,80 +46,79 @@
         </div>
     </div>
     @include('modal_windows/issue/info')
+    <script>
+        $(document).on('click', '.show_issue_info', function(){
+            var issueId = $(this).closest('tr').attr('issue_id');
+            var projectName = $(this).closest('tr').attr('project_name');
+            $.ajax({
+                type: "get",
+                url: '/issues/' + issueId,
+                headers: {
+                    'X-CSRF-Token': $('input[name=_token]').val(),   //If your header name has spaces or any other char not appropriate
+                },
+                dataType: 'json',
+                success: function (issueInfo) {
+                    console.log(issueInfo);
+                    //alert(issueInfo['executor']['firstname']);
+                    $("#issueInfo").attr('issue_id', issueInfo['id']);
+                    $("#issueInfo #project").val(projectName);
+                    $("#issueInfo #name").val(issueInfo['name']);
+                    $("#issueInfo #executor").val(issueInfo['executor']['firstname']);
+                    $("#issueInfo #status").val(issueInfo['status']['name']);
+                    $("#issueInfo #issue_type").val(issueInfo['type']['name']);
+                    $("#issueInfo #complexity").val(issueInfo['complexity']);
+                    $("#issueInfo #priority").val(issueInfo['priority']);
+                    $("#issueInfo #estimated_time").val(issueInfo['estimated_time']);
+                    $("#issueInfo #spent_time").val(issueInfo['spent_time']);
+                }
+            });
+        });
+
+        $(document).on('click', '#issueInfo .approve', function(){
+            var issueId = $('#issueInfo').attr('issue_id');
+
+            $.ajax({
+                type: "POST",
+                url: '/issues/' + issueId+'/approve',
+                headers: {
+                    'X-CSRF-Token': $('input[name=_token]').val(),   //If your header name has spaces or any other char not appropriate
+                },
+                dataType: 'json',
+                success: function (issueInfo) {
+
+                }
+            });
+        })
+
+        $(document).on('click', '#issueInfo .return', function(){
+            var issueId = $('#issueInfo').attr('issue_id');
+            $.ajax({
+                type: "POST",
+                url: '/issues/' + issueId+'/return',
+                headers: {
+                    'X-CSRF-Token': $('input[name=_token]').val(),   //If your header name has spaces or any other char not appropriate
+                },
+                dataType: 'json',
+                success: function (issueInfo) {
+
+                }
+            });
+        })
+
+        $(document).on('click', '#issueInfo .rate', function(){
+            var issueId = $('#issueInfo').attr('issue_id');//$(this).closest('tr').attr('issue_id');
+
+            $.ajax({
+                type: "POST",
+                url: '/issues/' + issueId+'/rate',
+                headers: {
+                    'X-CSRF-Token': $('input[name=_token]').val(),   //If your header name has spaces or any other char not appropriate
+                },
+                dataType: 'json',
+                success: function (issueInfo) {
+
+                }
+            });
+        })
+    </script>
 @endsection
-
-<script>
-    $(document).on('click', '.show_issue_info', function(){
-        var issueId = $(this).closest('tr').attr('issue_id');
-        var projectName = $(this).closest('tr').attr('project_name');
-        $.ajax({
-            type: "get",
-            url: '/issues/' + issueId,
-            headers: {
-                'X-CSRF-Token': $('input[name=_token]').val(),   //If your header name has spaces or any other char not appropriate
-            },
-            dataType: 'json',
-            success: function (issueInfo) {
-                console.log(issueInfo);
-                //alert(issueInfo['executor']['firstname']);
-                $("#issueInfo").attr('issue_id', issueInfo['id']);
-                $("#issueInfo #project").val(projectName);
-                $("#issueInfo #name").val(issueInfo['name']);
-                $("#issueInfo #executor").val(issueInfo['executor']['firstname']);
-                $("#issueInfo #status").val(issueInfo['status']['name']);
-                $("#issueInfo #issue_type").val(issueInfo['type']['name']);
-                $("#issueInfo #complexity").val(issueInfo['complexity']);
-                $("#issueInfo #priority").val(issueInfo['priority']);
-                $("#issueInfo #estimated_time").val(issueInfo['estimated_time']);
-                $("#issueInfo #spent_time").val(issueInfo['spent_time']);
-            }
-        });
-    });
-
-    $(document).on('click', '#issueInfo .approve', function(){
-        var issueId = $('#issueInfo').attr('issue_id');
-
-        $.ajax({
-            type: "POST",
-            url: '/issues/' + issueId+'/approve',
-            headers: {
-                'X-CSRF-Token': $('input[name=_token]').val(),   //If your header name has spaces or any other char not appropriate
-            },
-            dataType: 'json',
-            success: function (issueInfo) {
-
-            }
-        });
-    })
-
-    $(document).on('click', '#issueInfo .return', function(){
-        var issueId = $('#issueInfo').attr('issue_id');
-        $.ajax({
-            type: "POST",
-            url: '/issues/' + issueId+'/return',
-            headers: {
-                'X-CSRF-Token': $('input[name=_token]').val(),   //If your header name has spaces or any other char not appropriate
-            },
-            dataType: 'json',
-            success: function (issueInfo) {
-
-            }
-        });
-    })
-
-    $(document).on('click', '#issueInfo .rate', function(){
-        var issueId = $('#issueInfo').attr('issue_id');//$(this).closest('tr').attr('issue_id');
-
-        $.ajax({
-            type: "POST",
-            url: '/issues/' + issueId+'/rate',
-            headers: {
-                'X-CSRF-Token': $('input[name=_token]').val(),   //If your header name has spaces or any other char not appropriate
-            },
-            dataType: 'json',
-            success: function (issueInfo) {
-
-            }
-        });
-    })
-</script>
