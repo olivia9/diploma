@@ -71,6 +71,8 @@ class IssuesController extends Controller
         $issue->priority = $request->get('priority');
 
         $issue->save();
+
+        echo json_encode(['id' => $issue->id]);
     }
 
     public function update(IssueRequest $request, $id)
@@ -87,6 +89,8 @@ class IssuesController extends Controller
         $issue->priority = $request->get('priority');
 
         $issue->update();
+
+        echo json_encode(['id' => $id]);
     }
 
     public function listToBeApprove(IssueRequest $request)
