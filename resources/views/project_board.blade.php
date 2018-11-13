@@ -142,7 +142,7 @@
                         <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" required autofocus>
 
                         <label for="executor" class="col-md-4 control-label">Executor</label>
-                        <select id="executor" class="form-control">
+                        <select name="executor" id="executor" class="form-control">
                             <?php
                             foreach($executors as $executor)
                             {
@@ -154,7 +154,7 @@
                         <label for="status" class="col-md-4 control-label">Status</label>
                        <!-- <input id="status"  type="text" class="form-control" disabled name="status" value="{{ old('name') }}" required autofocus>
 -->
-                        <select id="status" class="form-control">
+                        <select name="status" id="status" class="form-control">
                             <?php
                             foreach($issueStatuses as $status)
                             {
@@ -164,7 +164,7 @@
                         </select>
 
                         <label for="issue_type" class="col-md-4 control-label">Issue Type</label>
-                        <select id="issue_type" class="form-control">
+                        <select name="issue_type" id="issue_type" class="form-control">
                             <?php
                             foreach($issueTypes as $issueType)
                             {
@@ -174,7 +174,7 @@
                         </select>
 
                         <label for="complexity" class="col-md-4 control-label">Complexity</label>
-                        <select id="complexity" class="form-control">
+                        <select name="complexity" id="complexity" class="form-control">
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -186,7 +186,7 @@
                         <input id="estimated_time" type="number" class="form-control"  name="status" value="{{ old('name') }}">
 
                         <label for="priority" class="col-md-4 control-label">Priority</label>
-                        <select id="priority" class="form-control">
+                        <select name="priority" id="priority" class="form-control">
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
@@ -235,16 +235,19 @@
             };
 
             $.ajax({
-                type: "POST",
                 url: '/issues/new',
-                data: issue,
+                type: 'POST',
                 headers: {
-                    'X-CSRF-Token': $('input[name=_token]').val(),   //If your header name has spaces or any other char not appropriate
+                    'X-CSRF-Token': $('input[name=_token]').val(),
                 },
-                dataType: 'json',
-                success: function (data) {
-                    document.location.reload();
-                }
+                data: issue,
+                dataType: 'json'
+            })
+            .done(function(answer) {
+                document.location.reload();
+            })
+            .fail(function(jqXHR, textStatus) {
+                console.log('Request failed: ' + textStatus);
             });
 
         });
@@ -285,17 +288,23 @@
                 'priority' : $('#issueUpdate #priority option:selected').val()
             };
 
+            console.log(issue);
+            return;
+
             $.ajax({
-                type: "POST",
                 url: '/issues/' + $('#issueUpdate input[name="issue"]').val(),
-                data: issue,
+                type: 'POST',
                 headers: {
-                    'X-CSRF-Token': $('input[name=_token]').val(),   //If your header name has spaces or any other char not appropriate
+                    'X-CSRF-Token': $('input[name=_token]').val(),
                 },
-                dataType: 'json',
-                success: function (data) {
-                    document.location.reload();
-                }
+                data: issue,
+                dataType: 'json'
+            })
+            .done(function(answer) {
+                document.location.reload();
+            })
+            .fail(function(jqXHR, textStatus) {
+                console.log('Request failed: ' + textStatus);
             });
 
         });
@@ -306,21 +315,25 @@
                 $('#issueUpdate .modal-body').append('<label for="spent_time" class="col-md-4 control-label">Spent time(hour)</label>\n' +
                     '                        <input id="spent_time" type="number" class="form-control"  name="status">');
             }
-        })
+        });
 
         //Delete Issue
         $(document).on("click", ".delete_issue", function () {
             var issueId = $(this).closest('.issue_update').attr('issue_id');
+
             $.ajax({
-                type: "DELETE",
                 url: '/issues/' + issueId,
+                type: 'DELETE',
                 headers: {
-                    'X-CSRF-Token': $('input[name=_token]').val(),   //If your header name has spaces or any other char not appropriate
+                    'X-CSRF-Token': $('input[name=_token]').val(),
                 },
-                dataType: 'json',
-                success: function (data) {
-                    document.location.reload();
-                }
+                dataType: 'json'
+            })
+            .done(function(answer) {
+                document.location.reload();
+            })
+            .fail(function(jqXHR, textStatus) {
+                console.log('Request failed: ' + textStatus);
             });
         });
 
