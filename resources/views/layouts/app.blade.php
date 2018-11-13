@@ -16,6 +16,7 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <script src="{{ asset('js/jquery.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('js/app.js') }}"></script>
     <!-- Scripts -->
     <script>
         window.Laravel = <?php echo json_encode([
