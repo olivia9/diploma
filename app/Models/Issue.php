@@ -16,9 +16,19 @@ class Issue extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function status()
+    {
+        return $this->belongsTo(IssueStatus::class);
+    }
+
     public function project()
     {
         return $this->belongsTo(Project::class);
+    }
+
+    public function type()
+    {
+        return $this->belongsTo(IssueType::class, 'issue_type_id');
     }
     /**
      * The attributes that are mass assignable.
