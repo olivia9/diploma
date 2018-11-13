@@ -48,28 +48,28 @@
             </div>
         </div>
     </div>
-@endsection
 
-<script>
-    $(document).on("click", "#new_user", function () {
-       // alert($('#role option:selected').attr('role_id'));
-        var issueId = $(this).attr('issue_id');
-        $.ajax({
-            type: "POST",
-            url: '/users/new',
-            headers: {
-                'X-CSRF-Token': $('input[name=_token]').val(),   //If your header name has spaces or any other char not appropriate
-            },
-            data:{
-                'email':$('#email').val(),
-                'role':$('#role option:selected').attr('role_id')
-            },
-            dataType: 'json',
-            success: function (issueData) {
-                $('#issueUpdate #name').val(issueData['name']);
-                $('#issueUpdate #project').val($('.project_name').html());
-                $('#issueUpdate #status').attr('status_id');
-            }
+    <script>
+        $(document).on("click", "#new_user", function () {
+            // alert($('#role option:selected').attr('role_id'));
+            var issueId = $(this).attr('issue_id');
+            $.ajax({
+                type: "POST",
+                url: '/users/new',
+                headers: {
+                    'X-CSRF-Token': $('input[name=_token]').val(),   //If your header name has spaces or any other char not appropriate
+                },
+                data:{
+                    'email':$('#email').val(),
+                    'role':$('#role option:selected').attr('role_id')
+                },
+                dataType: 'json',
+                success: function (issueData) {
+                    $('#issueUpdate #name').val(issueData['name']);
+                    $('#issueUpdate #project').val($('.project_name').html());
+                    $('#issueUpdate #status').attr('status_id');
+                }
+            });
         });
-    });
-</script>
+    </script>
+@endsection

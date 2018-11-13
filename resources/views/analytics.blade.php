@@ -61,53 +61,51 @@
                         </tbody>
                     </table>
                 </div>
-               <!--    <div><a href=""><img style="width:40px;" src="{{ URL::to('/images/add_user.png') }}"  /></a></div>-->
-
+                <!--<div><a href=""><img style="width:40px;" src="{{ URL::to('/images/add_user.png') }}"  /></a></div>-->
              </div>
+        </div>
     </div>
 
-@endsection
+    <script>
+        //Open modal window for creating new issue
+        $(document).on("click", ".issue_create", function () {
+            var issueStatus = {'name': $(this).closest('.issue_status_panel').find('.issue_status_name').html(),
+                'id':$(this).closest('.issue_status_panel').find('.issue_status_name').attr('issue_status_id')};
 
-<script>
-    //Open modal window for creating new issue
-    $(document).on("click", ".issue_create", function () {
-        var issueStatus = {'name': $(this).closest('.issue_status_panel').find('.issue_status_name').html(),
-           'id':$(this).closest('.issue_status_panel').find('.issue_status_name').attr('issue_status_id')};
+            $('#issueCreate #status').val(issueStatus['name']);
+            $('#issueCreate #status').attr('status_id', issueStatus['id']);
+            $('#project').val($('.project_name').html());
 
-        $('#issueCreate #status').val(issueStatus['name']);
-        $('#issueCreate #status').attr('status_id', issueStatus['id']);
-        $('#project').val($('.project_name').html());
-
-    });
-
-    //Creating new issue
-    $(document).on("click", ".new_issue", function () {
-
-        var issue = {
-            'name' : $('#name').val(),
-            'project': $("#project").attr('project_id'),
-            'executor' : $('#executor option:selected').attr('executor_id'),
-            'status' :  $('#issueCreate #status').attr('status_id'),
-            'type' : $( '#issue_type option:selected').attr('issue_type_id'),
-            'complexity' : $('#complexity option:selected').val(),
-            'estimated_time' : $('#estimated_time').val(),
-            'priority' : $('#priority option:selected').val()
-        };
-
-        $.ajax({
-            type: "POST",
-            url: '/issues/new',
-            data: issue,
-            headers: {
-                'X-CSRF-Token': $('input[name=_token]').val(),   //If your header name has spaces or any other char not appropriate
-            },
-            dataType: 'json',
-            success: function (data) {
-                console.info(data);
-            }
         });
 
-    });
+        //Creating new issue
+        $(document).on("click", ".new_issue", function () {
 
+            var issue = {
+                'name' : $('#name').val(),
+                'project': $("#project").attr('project_id'),
+                'executor' : $('#executor option:selected').attr('executor_id'),
+                'status' :  $('#issueCreate #status').attr('status_id'),
+                'type' : $( '#issue_type option:selected').attr('issue_type_id'),
+                'complexity' : $('#complexity option:selected').val(),
+                'estimated_time' : $('#estimated_time').val(),
+                'priority' : $('#priority option:selected').val()
+            };
 
-</script>
+            $.ajax({
+                type: "POST",
+                url: '/issues/new',
+                data: issue,
+                headers: {
+                    'X-CSRF-Token': $('input[name=_token]').val(),   //If your header name has spaces or any other char not appropriate
+                },
+                dataType: 'json',
+                success: function (data) {
+                    console.info(data);
+                }
+            });
+
+        });
+    </script>
+
+@endsection

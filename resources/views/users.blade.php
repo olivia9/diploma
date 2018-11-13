@@ -66,26 +66,26 @@
         </div>
     </div>
 
+    <script>
+        $(document).on("click", ".new_user", function () {
+
+            $.ajax({
+                type: "POST",
+                url: '/users/new',
+                headers: {
+                    'X-CSRF-Token': $('input[name=_token]').val(),   //If your header name has spaces or any other char not appropriate
+                },
+                data:{
+                    'email':$('#email').val(),
+                    'role':$('#role option:selected').attr('role_id')
+                },
+                dataType: 'json',
+                success: function () {
+                    document.location.reload();
+                }
+            });
+
+        });
+    </script>
 
 @endsection
-
-<script>
-    $(document).on("click", ".new_user", function () {
-
-        $.ajax({
-            type: "POST",
-            url: '/users/new',
-            headers: {
-                'X-CSRF-Token': $('input[name=_token]').val(),   //If your header name has spaces or any other char not appropriate
-            },
-            data:{
-                'email':$('#email').val(),
-                'role':$('#role option:selected').attr('role_id')
-            },
-            dataType: 'json',
-            success: function () {
-            }
-        });
-
-    });
-</script>

@@ -8,7 +8,7 @@
                     <div class="panel-heading">
                         <div >
                             <img style="width:40px;" src="{{ URL::to('/images/'.$project->avatar) }}"  />
-                            <span style="font-size:25;">{{$project->name}}</span>
+                            <span style="font-size:25px;">{{$project->name}}</span>
                         </div>
                     </div>
 

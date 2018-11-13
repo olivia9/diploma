@@ -50,7 +50,7 @@
                 ?>
 
              </div>
-    </div>
+        </div>
 
         <div id="issueCreate" class="modal fade" role="dialog">
             <div class="modal-dialog">
@@ -119,8 +119,8 @@
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     </div>
                 </div>
-                </div>
-                </div>
+            </div>
+        </div>
 
         <!--ISSUE UPDATE-->
         <div id="issueUpdate" class="modal fade" role="dialog">
@@ -202,131 +202,128 @@
                 </div>
             </div>
         </div>
+    </div>
+    <script>
+        //Open modal window for creating new issue
+        $(document).on("click", ".issue_create", function () {
+            var issueStatus = {'name': $(this).closest('.issue_status_panel').find('.issue_status_name').html(),
+                'id':$(this).closest('.issue_status_panel').find('.issue_status_name').attr('issue_status_id')};
+            if(issueStatus['name'] == 'done')
+                $('#issueCreate .modal-body').append('<label for="spent_time" class="col-md-4 control-label">Spent time(hour)</label>\n' +
+                    '                        <input id="spent_time" type="number" class="form-control"  name="status">');
+            //console.log(issueStatus);
+
+            $('#issueCreate #status').val(issueStatus['name']);
+            $('#issueCreate #status').attr('status_id', issueStatus['id']);
+            $('#project').val($('.project_name').html());
+
+        });
+
+        //Creating new issue
+        $(document).on("click", ".new_issue", function () {
+
+            var issue = {
+                'name' : $('#issueCreate #name').val(),
+                'project': $("#issueCreate #project").attr('project_id'),
+                'executor' : $('#issueCreate #executor option:selected').attr('executor_id'),
+                'status' :  $('#issueCreate #status').attr('status_id'),
+                'type' : $( '#issueCreate #issue_type option:selected').attr('issue_type_id'),
+                'complexity' : $('#issueCreate #complexity option:selected').val(),
+                'estimated_time' : $('#issueCreate #estimated_time').val(),
+                'spent_time' : ( typeof $('#issueCreate #spent_time').val() != 'undifined')? $('#issueCreate #spent_time').val() :0,
+                'priority' : $('#issueCreate #priority option:selected').val()
+            };
+
+            $.ajax({
+                type: "POST",
+                url: '/issues/new',
+                data: issue,
+                headers: {
+                    'X-CSRF-Token': $('input[name=_token]').val(),   //If your header name has spaces or any other char not appropriate
+                },
+                dataType: 'json',
+                success: function (data) {
+                    document.location.reload();
+                }
+            });
+
+        });
+
+        //Updating issue
+        $(document).on("click", ".issue_update .panel-body", function () {
+            var issueId = $(this).closest('.issue_update').attr('issue_id');
+            $.ajax({
+                type: "GET",
+                url: '/issues/'+issueId,
+                headers: {
+                    'X-CSRF-Token': $('input[name=_token]').val(),   //If your header name has spaces or any other char not appropriate
+                },
+                dataType: 'json',
+                success: function (issueData) {
+                    $('#issueUpdate #name').val(issueData['name']);
+                    $('#issueUpdate #project').val($('.project_name').html());
+                    $('#issueUpdate #status').attr('status_id', issueData['status_id']);
+                    $('#issueUpdate #estimated_time').val(issueData['estimated_time']);
+                    $('#issueUpdate #priority').val(issueData['priority']);
+                    $('#issueUpdate #complexity').val(issueData['complexity']);
+                    $('#issueUpdate input[name="issue"]').val(issueData['id']);
+                }
+            });
+        });
+
+        //Creating new issue
+        $(document).on("click", ".update_issue", function () {
+
+            var issue = {
+                'name' : $('#issueUpdate #name').val(),
+                'project': $("#issueUpdate #project").attr('project_id'),
+                'executor' : $('#issueUpdate #executor option:selected').attr('executor_id'),
+                'status' :  $('#issueUpdate #status').attr('status_id'),
+                'type' : $( '#issueUpdate #issue_type option:selected').attr('issue_type_id'),
+                'complexity' : $('#issueUpdate #complexity option:selected').val(),
+                'estimated_time' : $('#issueUpdate #estimated_time').val(),
+                'priority' : $('#issueUpdate #priority option:selected').val()
+            };
+
+            $.ajax({
+                type: "POST",
+                url: '/issues/' + $('#issueUpdate input[name="issue"]').val(),
+                data: issue,
+                headers: {
+                    'X-CSRF-Token': $('input[name=_token]').val(),   //If your header name has spaces or any other char not appropriate
+                },
+                dataType: 'json',
+                success: function (data) {
+                    document.location.reload();
+                }
+            });
+
+        });
+
+        //Change status issue
+        $(document).on('change', '#issueUpdate #status', function(){
+            if($('#issueUpdate #status option:selected').val() =='done'){
+                $('#issueUpdate .modal-body').append('<label for="spent_time" class="col-md-4 control-label">Spent time(hour)</label>\n' +
+                    '                        <input id="spent_time" type="number" class="form-control"  name="status">');
+            }
+        })
+
+        //Delete Issue
+        $(document).on("click", ".delete_issue", function () {
+            var issueId = $(this).closest('.issue_update').attr('issue_id');
+            $.ajax({
+                type: "DELETE",
+                url: '/issues/' + issueId,
+                headers: {
+                    'X-CSRF-Token': $('input[name=_token]').val(),   //If your header name has spaces or any other char not appropriate
+                },
+                dataType: 'json',
+                success: function (data) {
+                    document.location.reload();
+                }
+            });
+        });
+
+    </script>
         <!--ISSUE UPDATE-->
 @endsection
-<script>
-    //Open modal window for creating new issue
-    $(document).on("click", ".issue_create", function () {
-        var issueStatus = {'name': $(this).closest('.issue_status_panel').find('.issue_status_name').html(),
-           'id':$(this).closest('.issue_status_panel').find('.issue_status_name').attr('issue_status_id')};
-        if(issueStatus['name'] == 'done')
-            $('#issueCreate .modal-body').append('<label for="spent_time" class="col-md-4 control-label">Spent time(hour)</label>\n' +
-                '                        <input id="spent_time" type="number" class="form-control"  name="status">');
-        //console.log(issueStatus);
-
-        $('#issueCreate #status').val(issueStatus['name']);
-        $('#issueCreate #status').attr('status_id', issueStatus['id']);
-        $('#project').val($('.project_name').html());
-
-    });
-
-    //Creating new issue
-    $(document).on("click", ".new_issue", function () {
-
-        var issue = {
-            'name' : $('#issueCreate #name').val(),
-            'project': $("#issueCreate #project").attr('project_id'),
-            'executor' : $('#issueCreate #executor option:selected').attr('executor_id'),
-            'status' :  $('#issueCreate #status').attr('status_id'),
-            'type' : $( '#issueCreate #issue_type option:selected').attr('issue_type_id'),
-            'complexity' : $('#issueCreate #complexity option:selected').val(),
-            'estimated_time' : $('#issueCreate #estimated_time').val(),
-            'spent_time' : ( typeof $('#issueCreate #spent_time').val() != 'undifined')? $('#issueCreate #spent_time').val() :0,
-            'priority' : $('#issueCreate #priority option:selected').val()
-        };
-
-        $.ajax({
-            type: "POST",
-            url: '/issues/new',
-            data: issue,
-            headers: {
-                'X-CSRF-Token': $('input[name=_token]').val(),   //If your header name has spaces or any other char not appropriate
-            },
-            dataType: 'json',
-            success: function (data) {
-                document.location.reload();
-            }
-        });
-
-    });
-
-    //Updating issue
-    $(document).on("click", ".issue_update .panel-body", function () {
-        var issueId = $(this).closest('.issue_update').attr('issue_id');
-        $.ajax({
-            type: "GET",
-            url: '/issues/'+issueId,
-            headers: {
-                'X-CSRF-Token': $('input[name=_token]').val(),   //If your header name has spaces or any other char not appropriate
-            },
-            dataType: 'json',
-            success: function (issueData) {
-                $('#issueUpdate #name').val(issueData['name']);
-                $('#issueUpdate #project').val($('.project_name').html());
-                $('#issueUpdate #status').attr('status_id', issueData['status_id']);
-                $('#issueUpdate #estimated_time').val(issueData['estimated_time']);
-                $('#issueUpdate #priority').val(issueData['priority']);
-                $('#issueUpdate #complexity').val(issueData['complexity']);
-                $('#issueUpdate input[name="issue"]').val(issueData['id']);
-            }
-        });
-    });
-
-    //Creating new issue
-    $(document).on("click", ".update_issue", function () {
-
-        var issue = {
-            'name' : $('#issueUpdate #name').val(),
-            'project': $("#issueUpdate #project").attr('project_id'),
-            'executor' : $('#issueUpdate #executor option:selected').attr('executor_id'),
-            'status' :  $('#issueUpdate #status').attr('status_id'),
-            'type' : $( '#issueUpdate #issue_type option:selected').attr('issue_type_id'),
-            'complexity' : $('#issueUpdate #complexity option:selected').val(),
-            'estimated_time' : $('#issueUpdate #estimated_time').val(),
-            'priority' : $('#issueUpdate #priority option:selected').val()
-        };
-
-        $.ajax({
-            type: "POST",
-            url: '/issues/' + $('#issueUpdate input[name="issue"]').val(),
-            data: issue,
-            headers: {
-                'X-CSRF-Token': $('input[name=_token]').val(),   //If your header name has spaces or any other char not appropriate
-            },
-            dataType: 'json',
-            success: function (data) {
-                document.location.reload();
-            }
-        });
-
-    });
-
-    //Change status issue
-    $(document).on('change', '#issueUpdate #status', function(){
-        if($('#issueUpdate #status option:selected').val() =='done'){
-            $('#issueUpdate .modal-body').append('<label for="spent_time" class="col-md-4 control-label">Spent time(hour)</label>\n' +
-                '                        <input id="spent_time" type="number" class="form-control"  name="status">');
-        }
-    })
-
-    //Delete Issue
-    $(document).on("click", ".delete_issue", function () {
-        var issueId = $(this).closest('.issue_update').attr('issue_id');
-        $.ajax({
-            type: "DELETE",
-            url: '/issues/' + issueId,
-            headers: {
-                'X-CSRF-Token': $('input[name=_token]').val(),   //If your header name has spaces or any other char not appropriate
-            },
-            dataType: 'json',
-            success: function (data) {
-                document.location.reload();
-            }
-        });
-    });
-
-
-
-
-</script>
-    </div>
