@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+@include('modal_windows/project/new')
 @section('content')
     <div class="container">
     <div class="row">
@@ -8,7 +8,7 @@
                     <div class="panel-heading">
                         <div style="display:inline-block;">List Projects</div>
                         <div style="display:inline-block;float:right;"><button>
-                            <a href="{{ url('/projects/new/form') }}">
+                            <a data-toggle="modal" data-target="#newProject">
                                 New Project
                             </a>
                         </button>
@@ -26,7 +26,7 @@
                             </thead>
                             <tbody>
                             @foreach($projects as $project)
-                                <tr>
+                                <tr project_id="{{$project->id}}">
                                     <td>
                                         <img style="width:30px;" src="{{ URL::to('/images/'.$project->avatar) }}"  />
                                         <a href="/project/{{$project['id']}}/board">
@@ -36,6 +36,9 @@
                                     <td>{{$project['key']}}
                                     <td> <img style="width:30px;" src="{{ URL::to('/images/user.png') }}"  />{{$project['pm']['name']}}
                                     </td>
+                                    <td><button type="button" class="close delete_project" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button></td>
                                 </tr>
                             @endforeach
                             </tbody>
@@ -46,3 +49,26 @@
     </div>
     </div>
 @endsection
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+<script>
+//Delete Issue
+$(document).on("click", ".delete_project", function () {
+var projectId = $(this).closest('tr').attr('project_id');
+
+$.ajax({
+type: "DELETE",
+url: '/projects/' + projectId,
+headers: {
+'X-CSRF-Token': $('input[name=_token]').val(),   //If your header name has spaces or any other char not appropriate
+},
+dataType: 'json',
+success: function (data) {
+document.location.reload();
+}
+});
+// alert(issueId);
+});
+</script>

@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Issue;
+use App\Models\IssueStatus;
+use App\Models\Project;
 use App\Models\User;
 use App\Http\Requests\Issue as IssueRequest;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class IssuesController extends Controller
 {
@@ -22,6 +25,14 @@ class IssuesController extends Controller
         return response($issue, 200);
     }
 
+    public function delete(IssueRequest $request, $issueId)
+    {
+        $issue = Issue::find($issueId);
+        $issue->delete();
+
+        return response('', 204);
+    }
+
     public function store(IssueRequest $request)
     {
 
@@ -33,6 +44,7 @@ class IssuesController extends Controller
         $issue->issue_type_id = $request->get('type');
         $issue->complexity = $request->get('complexity');
         $issue->estimated_time = $request->get('estimated_time');
+        $issue->spent_time = $request->get('estimated_time');
         $issue->priority = $request->get('priority');
 
         $issue->save();
@@ -52,5 +64,12 @@ class IssuesController extends Controller
         $issue->priority = $request->get('priority');
 
         $issue->update();
+    }
+
+    public function listToBeApprove(IssueRequest $request)
+    {
+        $listIssues = Issue::where('approved_by_pm',0)->where('status_id', IssueStatus::where('name', 'done')->first()->id)->where('project_id', Project::where('pm_id', Auth::user()->id)->get()->pluck('id'))->get();
+
+        return view('list_to_be_approved', ['issues' => $listIssues]);
     }
 }

@@ -67,8 +67,8 @@ class UsersController extends Controller
         User::where('email', $email)
             ->update(['firstname' => $request->get('firstname'),
                       'lastname' => $request->get('lastname'),
-                      'password' => md5($request->get('password')),
-                      'verified_at' => Carbon::now()
+                      'password' => $request->get('password'),
+                      'email_verified_at' => Carbon::now()->format('Y-m-d h:i:s')
                 ]);
     }
 }

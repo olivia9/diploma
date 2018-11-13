@@ -20,7 +20,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'login', 'email', 'password',
+        'login', 'email', 'password','email_verified_at',
     ];
     /**
      * The attributes that should be hidden for arrays.
@@ -61,6 +61,12 @@ class User extends Authenticatable
     public function issue()
     {
         return $this->hasMany(Issue::class);
+    }
+
+    public static function pmS()
+    {
+        return User::whereIn('id', UserRole::where('role_id', Role::where('slug', 'pm')->first()->id)->get()->pluck('user_id'))->whereNotNull('email_verified_at')->get()->pluck('name','id');
+
     }
 
 

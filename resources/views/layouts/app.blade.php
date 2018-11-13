@@ -57,6 +57,14 @@
                     </a>
                 </ul>';
 
+                if(\App\Models\User::hasPermission('approve_issue'))
+                    echo '
+                    <ul class="nav navbar-nav">
+                        <a class="navbar-brand" href="'. url('/issues/approve').'">
+                           To be Approved
+                        </a>
+                    </ul>';
+
                     ?>
 
 

@@ -36,9 +36,7 @@ class Issue extends FormRequest
                  'priority' => 'required',
                  'complexity' => 'required'
                 ];
-            case 'index':
-            case 'show':
-            case 'destroy':
+            default:
                 return [
 
                 ];

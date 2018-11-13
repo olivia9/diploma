@@ -29,25 +29,36 @@ class ProjectsController extends Controller
      */
     public function index()
     {
+        $pmS =  User::pmS();
+
         $loginUser = Auth::user();
 
         if($loginUser->admin)
             $projects = Project::with('pm')->get();
 
         if($loginUser->pm)
-            $projects = Project::with('pm')->where('pm_id', $loginUser)->get();
+            $projects = Project::with('pm')->where('pm_id', $loginUser->id)->get();
 
         if($loginUser->staff)
-            $projects = Project::with('pm')->where('pm_id', $loginUser)->get();
+            $projects = Project::with('pm')->where('pm_id', $loginUser->id)->get();
 
-        return view('projects',['projects'=>$projects]);
+        return view('projects',['projects'=>$projects, 'pmS'=>$pmS]);
     }
+
+    public function delete($projectId)
+    {
+        $project = Project::find($projectId);
+        $project->delete();
+
+        return response('', 204);
+    }
+
 
     public function board($id)
     {
         $project = Project::find($id);
         $issueStatuses = IssueStatus::all();
-        $issues = Issue::all();
+        $issues = Issue::where('project_id', $id)->get();
         $issueTypes = IssueType::all();
         $executors = User::whereIn('id', UserRole::where('role_id', Role::where('slug', 'staff')->first()->id)->get()->pluck('user_id'))->get();
 
@@ -62,8 +73,7 @@ class ProjectsController extends Controller
 
     public function newProjectForm()
     {
-        $pmS = User::all()->pluck('name','id');
-
+        $pmS =  User::pmS();
         return view('new_project',['pmS'=>$pmS]);
     }
 
@@ -72,7 +82,8 @@ class ProjectsController extends Controller
         $project = new Project;
         $project->avatar =$request->get('avatar','task.jpg');
         $project->name = $request->get('name');
-        $project->pm_id = 1;
+        $project->key = $request->get('key');
+        $project->pm_id = $request->get('pm');
 
         $project->save();
     }

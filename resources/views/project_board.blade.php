@@ -35,11 +35,14 @@
                         foreach($issues as $issue)
                             if($issue->status_id==$issueStatus->id)
                                 {
-                                    echo '<div class="panel panel-default issue_update" issue_id="'.$issue->id.'" data-toggle="modal" data-target="#issueUpdate">
+                                    echo '<div class="panel panel-default issue_update" issue_id="'.$issue->id.'">
                                         <div class="panel-heading">'.
                                             $project->key.$issue->id.' <span style="background:#8eb4cb; padding:2px;">'.$issue->executor->name.'</span>
+                                        <button type="button" class="close delete_issue" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
                                         </div>
-                                        <div class="panel-body">'.$issue->name.'</div>
+                                        <div class="panel-body"  data-toggle="modal" data-target="#issueUpdate">'.$issue->name.'</div>
                                         </div>';
                                 }
                                 echo '<button type="button" class="btn btn-info btn-lg issue_create" data-toggle="modal" data-target="#issueCreate">+</button></div>';
@@ -91,23 +94,23 @@
 
                         <label for="complexity" class="col-md-4 control-label">Complexity</label>
                         <select id="complexity" class="form-control">
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
                         </select>
 
-                        <label for="estimated_time" class="col-md-4 control-label">Estimated time(minute)</label>
+                        <label for="estimated_time" class="col-md-4 control-label">Estimated time(hour)</label>
                         <input id="estimated_time" type="number" class="form-control"  name="status" value="0">
 
                         <label for="priority" class="col-md-4 control-label">Priority</label>
                         <select id="priority" class="form-control">
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>4</option>
-                            <option>5</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
                         </select>
 
                     </div>
@@ -179,7 +182,7 @@
                             <option value="5">5</option>
                         </select>
 
-                        <label for="estimated_time" class="col-md-4 control-label">Estimated time(minute)</label>
+                        <label for="estimated_time" class="col-md-4 control-label">Estimated time(hour)</label>
                         <input id="estimated_time" type="number" class="form-control"  name="status" value="{{ old('name') }}">
 
                         <label for="priority" class="col-md-4 control-label">Priority</label>
@@ -208,6 +211,10 @@
     $(document).on("click", ".issue_create", function () {
         var issueStatus = {'name': $(this).closest('.issue_status_panel').find('.issue_status_name').html(),
            'id':$(this).closest('.issue_status_panel').find('.issue_status_name').attr('issue_status_id')};
+        if(issueStatus['name'] == 'done')
+            $('#issueCreate .modal-body').append('<label for="spent_time" class="col-md-4 control-label">Spent time(hour)</label>\n' +
+                '                        <input id="spent_time" type="number" class="form-control"  name="status">');
+        //console.log(issueStatus);
 
         $('#issueCreate #status').val(issueStatus['name']);
         $('#issueCreate #status').attr('status_id', issueStatus['id']);
@@ -226,6 +233,7 @@
             'type' : $( '#issueCreate #issue_type option:selected').attr('issue_type_id'),
             'complexity' : $('#issueCreate #complexity option:selected').val(),
             'estimated_time' : $('#issueCreate #estimated_time').val(),
+            'spent_time' : ( typeof $('#issueCreate #spent_time').val() != 'undifined')? $('#issueCreate #spent_time').val() :0,
             'priority' : $('#issueCreate #priority option:selected').val()
         };
 
@@ -245,8 +253,8 @@
     });
 
     //Updating issue
-    $(document).on("click", ".issue_update", function () {
-        var issueId = $(this).attr('issue_id');
+    $(document).on("click", ".issue_update .panel-body", function () {
+        var issueId = $(this).closest('.issue_update').attr('issue_id');
         $.ajax({
             type: "GET",
             url: '/issues/'+issueId,
@@ -295,6 +303,32 @@
 
     });
 
+    //Change status issue
+    $(document).on('change', '#issueUpdate #status', function(){
+        if($('#issueUpdate #status option:selected').val() =='done'){
+            $('#issueUpdate .modal-body').append('<label for="spent_time" class="col-md-4 control-label">Spent time(hour)</label>\n' +
+                '                        <input id="spent_time" type="number" class="form-control"  name="status">');
+        }
+    })
+
+    //Delete Issue
+    $(document).on("click", ".delete_issue", function () {
+        var issueId = $(this).closest('.issue_update').attr('issue_id');
+        $.ajax({
+            type: "DELETE",
+            url: '/issues/' + issueId,
+            headers: {
+                'X-CSRF-Token': $('input[name=_token]').val(),   //If your header name has spaces or any other char not appropriate
+            },
+            dataType: 'json',
+            success: function (data) {
+                document.location.reload();
+            }
+        });
+    });
+
+
 
 
 </script>
+    </div>
