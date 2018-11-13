@@ -24,6 +24,7 @@ class UsersController extends Controller
 
     /**
      * Show the application dashboard.
+     * @var UserRequest $request
      *
      * @return \Illuminate\Http\Response
      */
