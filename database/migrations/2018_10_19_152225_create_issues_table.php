@@ -22,8 +22,8 @@ class CreateIssuesTable extends Migration
             $table->unsignedInteger('issue_type_id');
             $table->enum('complexity',[1,2,3,4,5]);//сложность
             $table->integer('return')->default(0);
-            $table->integer('estimated_time')->default(0);;
-            $table->integer('spent_time')->default(0);;
+            $table->integer('estimated_time')->default(0);
+            $table->integer('spent_time')->default(0);
             $table->enum('priority',[1,2,3,4,5]);
 
             $table->foreign('project_id')->references('id')->on('projects');
