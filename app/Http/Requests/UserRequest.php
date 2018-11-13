@@ -13,7 +13,6 @@ class UserRequest extends FormRequest
      */
     public function authorize()
     {
-        dd($this);
         return true;
     }
 

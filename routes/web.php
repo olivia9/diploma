@@ -54,6 +54,9 @@ Route::group(['middleware' =>'auth'], function(){
     Route::get('/issues/{id}', 'IssuesController@show');
     Route::delete('/issues/{id}', 'IssuesController@delete');
     Route::post('/issues/{id}', 'IssuesController@update');
+    Route::post('/issues/{id}/approve', 'IssuesController@approve');
+    Route::post('/issues/{id}/return', 'IssuesController@return');
+    Route::post('/issues/{id}/rate', 'IssuesController@rate');
     Route::get('/issue/statuses', function(){
         return response(\App\Models\IssueStatus::all(), 200);
     });

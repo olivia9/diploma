@@ -15,8 +15,8 @@ class IssueStatus extends Model
      *
      * @var array
      */
- /*   public function pm()
+    public function issue()
     {
-        return $this->belongsTo(User::class);
-    }*/
+        return $this->hasOne(Issue::class);
+    }
 }

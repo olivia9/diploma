@@ -20,7 +20,7 @@ class IssuesController extends Controller
 
     public function show(IssueRequest $request, $issueId)
     {
-        $issue = Issue::find($issueId);
+        $issue = Issue::with(['executor','status', 'type'])->where('id', $issueId)->first();//find($issueId);
 
         return response($issue, 200);
     }
@@ -31,6 +31,28 @@ class IssuesController extends Controller
         $issue->delete();
 
         return response('', 204);
+    }
+
+    public function approve(IssueRequest $request, $issueId)
+    {
+        $issue = Issue::find($issueId);
+        $issue->approved_by_pm = 1;
+
+        $issue->update();
+    }
+
+    public function returnIssue(IssueRequest $request, $issueId)
+    {
+        $issue = Issue::find($issueId);
+        $issue->return++;
+
+        $issue->update();
+    }
+
+    public function rate(IssueRequest $request, $issueId)
+    {
+        $issue = Issue::find($issueId);
+        $issue->rate_by_pm = $request->get('rate');
     }
 
     public function store(IssueRequest $request)
