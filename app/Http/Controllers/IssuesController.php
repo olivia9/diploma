@@ -45,6 +45,7 @@ class IssuesController extends Controller
     {
         $issue = Issue::find($issueId);
         $issue->return++;
+        $issue->status_id = IssueStatus::where('name', 'to_do')->first()->id;
 
         $issue->update();
     }
