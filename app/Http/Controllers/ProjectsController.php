@@ -61,7 +61,7 @@ class ProjectsController extends Controller
         $issues = Issue::where('project_id', $id)->get();
         $issueTypes = IssueType::all();
         $executors = User::whereIn('id', UserRole::where('role_id', Role::where('slug', 'staff')->first()->id)->get()->pluck('user_id'))->get();
-
+        
         return view('project_board',[
             'project'=>$project,
             'issueStatuses' => $issueStatuses,

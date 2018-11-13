@@ -16,6 +16,8 @@ class CreateIssueTypesTable extends Migration
         Schema::create('issue_types', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+
+            $table->timestamps();
         });
     }
 

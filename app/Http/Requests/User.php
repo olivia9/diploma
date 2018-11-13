@@ -42,6 +42,8 @@ class User extends FormRequest
                 return [
 
                 ];
+            default:
+                return[];
         }
     }
 }
