@@ -2,8 +2,8 @@
 @section('content')
     <div class="container">
 
-    <div class="row">
-    <div class="col-md-offset-2 ">
+        <div class="row">
+            <div class="col-md-offset-2 ">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <div style="display:inline-block;">List Issues with status 'Done'</div>
@@ -42,8 +42,8 @@
                         </table>
                     </div>
                 </div>
-    </div>
-    </div>
+            </div>
+        </div>
     </div>
     @include('modal_windows/issue/info')
 @endsection

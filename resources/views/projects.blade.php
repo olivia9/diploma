@@ -1,9 +1,11 @@
 @extends('layouts.app')
-@include('modal_windows/project/new')
+
 @section('content')
+
+    @include('modal_windows/project/new')
     <div class="container">
-    <div class="row">
-    <div class="col-md-offset-2 ">
+        <div class="row">
+            <div class="col-md-offset-2 ">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <div style="display:inline-block;">List Projects</div>
@@ -45,27 +47,26 @@
                         </table>
                     </div>
                 </div>
+            </div>
+        </div>
     </div>
-    </div>
-    </div>
+
+    <script>
+        //Delete Issue
+        $(document).on("click", ".delete_project", function () {
+            var projectId = $(this).closest('tr').attr('project_id');
+
+            $.ajax({
+                type: "DELETE",
+                url: '/projects/' + projectId,
+                headers: {
+                    'X-CSRF-Token': $('input[name=_token]').val(),   //If your header name has spaces or any other char not appropriate
+                },
+                dataType: 'json',
+                success: function (data) {
+                    document.location.reload();
+                }
+            });
+        });
+    </script>
 @endsection
-
-<script>
-//Delete Issue
-$(document).on("click", ".delete_project", function () {
-var projectId = $(this).closest('tr').attr('project_id');
-
-$.ajax({
-type: "DELETE",
-url: '/projects/' + projectId,
-headers: {
-'X-CSRF-Token': $('input[name=_token]').val(),   //If your header name has spaces or any other char not appropriate
-},
-dataType: 'json',
-success: function (data) {
-document.location.reload();
-}
-});
-// alert(issueId);
-});
-</script>

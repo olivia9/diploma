@@ -107,7 +107,7 @@
             </div>
         </nav>
 
-        <div class="container" style="display:inline-block;height:100%;">
+        <div class="container" style="height:100%;">
             <div class="row">
                 <!--<div class="col-md-3">
                     <div class="panel panel-default">

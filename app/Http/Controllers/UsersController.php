@@ -30,11 +30,23 @@ class UsersController extends Controller
      */
     public function index(UserRequest $request)
     {
-        $users = User::whereNotNull('email_verified_at')->get();
+        $users = User::all()->toArray();
+
+        foreach($users as $key => $user) {
+            $userRole = UserRole::where('user_id', $user['id'])->first()->toArray();
+            $role = Role::where('id', $userRole['role_id'])->first()->toArray();
+
+            $user['roleName'] = $role['name'];
+
+            $users[$key] = $user;
+        }
+
         $roles = Role::all();
 
-        return view('users',['users'=>$users,
-            'roles' => $roles]);
+        return view('users',[
+            'users'=>$users,
+            'roles' => $roles
+        ]);
     }
 
     public function newUserForm()
@@ -48,12 +60,22 @@ class UsersController extends Controller
     {
         $email = $request->get('email');
         $role = $request->get('role');
+        $lastname = $request->get('lastname');
+        $firstname = $request->get('firstname');
 
-        $user = User::create(['email' => $email, 'password' => '']);
+        $user = User::create([
+            'email' => $email,
+            'password' => '',
+            'lastname' => $firstname,
+            'firstname' => $lastname,
+        ]);
+
         UserRole::create([
             'user_id' => $user->id,
-            'role_id' => (int)$role
+            'role_id' => (int)$role,
         ]);
+
+        echo json_encode(['id' => $user->id]);
     }
 
     public function showFinishRegistrationForm($email)
