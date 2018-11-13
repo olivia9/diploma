@@ -146,7 +146,7 @@
                             <?php
                             foreach($executors as $executor)
                             {
-                                echo '<option executor_id="'.$executor->id.'">'.$executor->name.'</option>';
+                                echo '<option value="'.$executor->id.'">'.$executor->name.'</option>';
                             }
                             ?>
                         </select>
@@ -158,7 +158,7 @@
                             <?php
                             foreach($issueStatuses as $status)
                             {
-                                echo '<option status_id="'.$status->id.'">'.$status->name.'</option>';
+                                echo '<option value="'.$status->id.'">'.$status->name.'</option>';
                             }
                             ?>
                         </select>
@@ -168,7 +168,7 @@
                             <?php
                             foreach($issueTypes as $issueType)
                             {
-                                echo '<option issue_type_id="'.$issueType->id.'">'.$issueType->name.'</option>';
+                                echo '<option value="'.$issueType->id.'">'.$issueType->name.'</option>';
                             }
                             ?>
                         </select>
@@ -280,16 +280,13 @@
             var issue = {
                 'name' : $('#issueUpdate #name').val(),
                 'project': $("#issueUpdate #project").attr('project_id'),
-                'executor' : $('#issueUpdate #executor option:selected').attr('executor_id'),
-                'status' :  $('#issueUpdate #status').attr('status_id'),
-                'type' : $( '#issueUpdate #issue_type option:selected').attr('issue_type_id'),
-                'complexity' : $('#issueUpdate #complexity option:selected').val(),
+                'executor' : $('#issueUpdate #executor').val(),
+                'status' :  $('#issueUpdate #status').val(),
+                'type' : $( '#issueUpdate #issue_type').val(),
+                'complexity' : $('#issueUpdate #complexity').val(),
                 'estimated_time' : $('#issueUpdate #estimated_time').val(),
-                'priority' : $('#issueUpdate #priority option:selected').val()
+                'priority' : $('#issueUpdate #priority').val()
             };
-
-            console.log(issue);
-            return;
 
             $.ajax({
                 url: '/issues/' + $('#issueUpdate input[name="issue"]').val(),
