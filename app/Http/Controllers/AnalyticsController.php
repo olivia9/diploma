@@ -30,7 +30,7 @@ class AnalyticsController extends Controller
         $project = Project::find($id);
         $projects = Project::with('pm')->get();
 
-        $issues = Issue::all()->toArray();
+        $issues = Issue::where('project_id', $id)->get()->toArray();
 
         $peopleData = [];
         foreach($issues as $issue) {
