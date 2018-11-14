@@ -30,7 +30,31 @@ class AnalyticsController extends Controller
         $project = Project::find($id);
         $projects = Project::with('pm')->get();
 
-        return view('analytics',['project'=>$project]);
+        $issues = Issue::all()->toArray();
+
+        $peopleData = [];
+        foreach($issues as $issue) {
+            $peopleData[$issue['executor_id']][] = $issue;
+        }
+
+        $resultData = [];
+        foreach($peopleData as $userId => $userTasks) {
+            $res = 0;
+            foreach($userTasks as $task) {
+                $task['return'] = $task['return'] == 0 ? 1 : $task['return'];
+                $task['spent_time'] = $task['spent_time'] == 0 ? 1 : $task['spent_time'];
+                $res += (0.5 * $task['rate_by_pm'] + (0.35 * $task['complexity'] / $task['spent_time']) * ($task['priority'] / 5)) / (0.6 * $task['return']);
+            }
+
+            $user = User::where('id', $userId)->first()->toArray();
+
+            $resultData[] = [
+                'rate' => $res / count($userTasks),
+                'user' => $user['firstname'] . ' ' . $user['lastname'],
+            ];
+        }
+
+        return view('analytics',['project' => $project, 'analytics' => $resultData]);
     }
 
     public function board($id)
