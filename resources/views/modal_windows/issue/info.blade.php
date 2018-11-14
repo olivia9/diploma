@@ -37,11 +37,9 @@
                 <input id="spent_time" type="number" class="form-control"  name="status" value="0">
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-submit approve" data-dismiss="modal">Approve</button>
+                <button type="button" class="btn btn-submit approve" data-dismiss="modal" data-toggle="modal" data-target="#issueRate">Approve</button>
                 <button type="button" class="btn btn-default return" data-dismiss="modal">Return</button>
             </div>
         </div>
     </div>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
