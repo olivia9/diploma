@@ -33,31 +33,16 @@
                         </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>
-                                    Natalia
-                                </td>
-                                <td>
-                                    3
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    Mike
-                                </td>
-                                <td>
-                                    2.7
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    Anton
-                                </td>
-                                <td>
-                                    2.5
-                                </td>
-                            </tr>
-
+                            @foreach($analytics as $row)
+                                <tr>
+                                    <td>
+                                        {{$row['user']}}
+                                    </td>
+                                    <td>
+                                        {{$row['rate']}}
+                                    </td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
